@@ -698,7 +698,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 
 # -------------------------
-# 0️⃣ Reproducibility (Seed)
+#  Reproducibility (Seed)
 # -------------------------
 SEED = 42
 os.environ['PYTHONHASHSEED'] = str(SEED)
@@ -707,7 +707,7 @@ np.random.seed(SEED)
 tf.random.set_seed(SEED)
 
 # -------------------------
-# 1️⃣ Load & Clean Data
+# Load & Clean Data
 # -------------------------
 data = pd.read_csv("tourism_dataset_final_clean.csv")
 data.columns = [c.strip() for c in data.columns]
@@ -718,12 +718,18 @@ numeric_cols = [
     'mean_temp','max_temp','min_temp','total_precip',
     'Sri Lanka tourism','Sri Lanka travel'
 ]
+count = len(data)
+print(count)
+
+count = data.shape[0]
+print(count)
+
 
 for col in numeric_cols:
     if col in data.columns:
         data[col] = data[col].fillna(method='ffill').fillna(method='bfill')
 
-# Festival → One-Hot Encode
+# Festival  One-Hot Encode
 if 'festival' in data.columns:
     data['festival'] = data['festival'].fillna('None')
     data = pd.get_dummies(data, columns=['festival'], drop_first=True)
@@ -734,7 +740,7 @@ data.sort_values('date', inplace=True)
 data.set_index('date', inplace=True)
 
 # -------------------------
-# 2️⃣ Feature & Target Split
+#  Feature & Target Split
 # -------------------------
 target_col = "tourist arrival"
 y = data[target_col].values.reshape(-1,1)
@@ -872,6 +878,22 @@ plt.ylabel("Forecasted Arrivals")
 plt.show()
 
 
+# -------------------------
+#  Actual vs Predicted Plot (Clean)
+# -------------------------
+
+plt.figure(figsize=(12,6))
+plt.plot(test_index, y_true, label="Actual Arrivals", linewidth=2)
+plt.plot(test_index, y_pred, label="Predicted Arrivals (LSTM)", linestyle="--", linewidth=2)
+
+plt.title("Actual vs Predicted Tourist Arrivals (Test Set)", fontsize=14)
+plt.xlabel("Date", fontsize=12)
+plt.ylabel("Tourist Arrivals", fontsize=12)
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
 # =========================
 # 12. Seasonality Decomposition (STL)
 # =========================
@@ -943,3 +965,6 @@ plt.ylabel("Tourist Arrivals")
 plt.xlabel("Future Months")
 plt.legend()
 plt.show()
+   
+
+   

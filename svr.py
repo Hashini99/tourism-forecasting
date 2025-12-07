@@ -78,6 +78,7 @@ import numpy as np
 from sklearn.svm import SVR
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+import datetime
 
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -215,5 +216,55 @@ plt.ylabel("Number of Tourists")
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+
+
+# Get last known year and month
+last_year = int(df.iloc[-1]["year"])
+last_month = int(df.iloc[-1]["month"])
+
+future_predictions = []
+future_dates = []
+
+# Start with last row of dataset
+future_row = df.iloc[-1].copy()
+
+for i in range(6):
+    # Move to next month
+    next_month = last_month + 1
+    next_year = last_year
+    
+    if next_month > 12:
+        next_month = 1
+        next_year += 1
+    
+    # Update year/month in feature row
+    future_row["year"] = next_year
+    future_row["month"] = next_month
+
+    # Prepare feature vector
+    X_future = np.array([[future_row[col] for col in X.columns]])
+    X_future_scaled = scaler_X.transform(X_future)
+
+    # Predict
+    y_future_scaled = svr.predict(X_future_scaled)
+    y_future = scaler_y.inverse_transform(y_future_scaled.reshape(-1,1))[0][0]
+
+    # Save output
+    future_predictions.append(int(y_future))
+    future_dates.append(f"{next_year}-{str(next_month).zfill(2)}")
+
+    # Update target value in feature row for next iteration
+    future_row[target_col] = y_future
+
+    # Update loop counters
+    last_month = next_month
+    last_year = next_year
+
+# Print results in terminal
+print("\n=== SVR 6-Month Future Forecast ===")
+for date, value in zip(future_dates, future_predictions):
+    print(f"{date}: {value} ")
+
 
 # Predicted tourist arrivals for September 2025: 188475
