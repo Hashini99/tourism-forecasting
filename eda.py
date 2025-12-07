@@ -1,112 +1,4 @@
-# # full_eda_tourism_terminal.py
-# import pandas as pd
-# import matplotlib.pyplot as plt
-# import seaborn as sns
 
-# # -------------------------------
-# # 1. Load dataset
-# # -------------------------------
-# df = pd.read_csv("tourism_dataset_clean.csv")  # replace with your cleaned CSV
-
-# # -------------------------------
-# # 2. Initial exploration
-# # -------------------------------
-# print("=== Dataset Info ===")
-# print(df.info())
-# print("\n=== First 5 Rows ===")
-# print(df.head())
-# print("\n=== Descriptive Stats ===")
-# print(df.describe(include='all'))
-
-# # -------------------------------
-# # 3. Data Cleaning
-# # -------------------------------
-# if 'month_name' in df.columns:
-#     df.drop('month_name', axis=1, inplace=True)
-
-# df['tourist arrival'] = pd.to_numeric(df['tourist arrival'].str.replace(',', ''), errors='coerce')
-# df['tourist arrival'] = df['tourist arrival'].interpolate()
-
-# numeric_cols = ['USD', 'GDP (current US$)',
-#                 'Kerosine type jet fuel (U.S. Gulf Coast Kerosene-Type Jet Fuel Spot Price FOB (Dollars per Gallon))',
-#                 'mean_temp', 'max_temp', 'min_temp', 'total_precip',
-#                 'Sri Lanka tourism', 'Sri Lanka travel']
-
-# for col in numeric_cols:
-#     df[col] = pd.to_numeric(df[col], errors='coerce')
-
-# df[numeric_cols] = df[numeric_cols].interpolate()
-
-# print("\n=== Missing Values After Cleaning ===")
-# print(df.isnull().sum())
-
-# # -------------------------------
-# # 4. Basic Statistics & Distribution
-# # -------------------------------
-# for col in ['tourist arrival', 'USD'] + ['Sri Lanka tourism', 'Sri Lanka travel']:
-#     print(f"\n=== Statistics for {col} ===")
-#     print(df[col].describe())
-#     print(f"\nTop 5 values for {col}:\n{df[col].head()}")
-#     plt.figure(figsize=(10,4))
-#     sns.histplot(df[col], bins=20, kde=True)
-#     plt.title(f"Distribution of {col}")
-#     plt.show()
-
-# # -------------------------------
-# # 5. Time Series Plots
-# # -------------------------------
-# df['date'] = pd.to_datetime(df[['year','month']].assign(DAY=1))
-# for col in ['tourist arrival', 'Sri Lanka tourism', 'Sri Lanka travel']:
-#     print(f"\n=== Time Series Summary for {col} ===")
-#     print(df.groupby(['year','month'])[col].sum())
-#     plt.figure(figsize=(12,5))
-#     sns.lineplot(x='date', y=col, data=df)
-#     plt.title(f"{col} Over Time")
-#     plt.xlabel("Date")
-#     plt.ylabel(col)
-#     plt.show()
-
-# # -------------------------------
-# # 6. Correlation Analysis
-# # -------------------------------
-# numeric_df = df.select_dtypes(include='number')
-# print("\n=== Correlation Matrix ===")
-# print(numeric_df.corr())
-# plt.figure(figsize=(12,8))
-# sns.heatmap(numeric_df.corr(), annot=True, fmt=".2f", cmap="coolwarm")
-# plt.title("Correlation Heatmap")
-# plt.show()
-
-# # -------------------------------
-# # 7. Boxplots for Outliers
-# # -------------------------------
-# if 'festival' in df.columns:
-#     print("\n=== Tourist Arrivals by Festival ===")
-#     print(df.groupby('festival')['tourist arrival'].describe())
-#     plt.figure(figsize=(12,5))
-#     sns.boxplot(x='festival', y='tourist arrival', data=df)
-#     plt.xticks(rotation=45)
-#     plt.title("Tourist Arrivals by Festival")
-#     plt.show()
-
-# print("\n=== Boxplots of Numeric Columns ===")
-# plt.figure(figsize=(12,6))
-# sns.boxplot(data=numeric_df)
-# plt.xticks(rotation=45)
-# plt.title("Boxplot of Numeric Columns")
-# plt.show()
-
-# # -------------------------------
-# # 8. Save cleaned & processed dataset
-# # -------------------------------
-# # df.to_csv("tourism_dataset_final_clean.csv", index=False)
-# print("Cleaned dataset saved as 'tourism_dataset_final_clean.csv'")
-
-
-
-
-
-# full_eda_tourism_terminal.py
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -114,7 +6,7 @@ from statsmodels.tsa.seasonal import seasonal_decompose
 # -------------------------------
 # 1. Load dataset
 # -------------------------------
-df = pd.read_csv("tourism_dataset_clean.csv")  # replace with your cleaned CSV
+df = pd.read_csv("tourism_dataset_clean.csv")  
 
 # -------------------------------
 # 2. Initial exploration

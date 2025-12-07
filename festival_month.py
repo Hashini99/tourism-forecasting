@@ -12,4 +12,4 @@ print(festival_df[["year", "month", "month_name", "festival", "tourist arrival"]
 
 # Optional — save to a new file
 festival_df.to_csv("festival_months_only.csv", index=False)
-print("\n✅ Saved filtered file as festival_months_only.csv")
+print("\n Saved filtered file as festival_months_only.csv")

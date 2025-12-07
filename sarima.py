@@ -1,4 +1,4 @@
-# sarima_tourist_prediction_fixed.py
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -28,8 +28,7 @@ df['date'] = pd.to_datetime(df[['year', 'month']].assign(day=1))
 df.set_index('date', inplace=True)
 
 ts = df['tourist arrival']
-ts = ts.asfreq('MS')  # ensure monthly start frequency
-
+ts = ts.asfreq('MS')  
 # -------------------------------
 # 3. SARIMA Model
 # -------------------------------
