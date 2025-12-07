@@ -61,14 +61,14 @@ y = data[target_col].values.reshape(-1,1)
 X = data.drop(columns=['year','month',target_col], errors='ignore')
 
 # -------------------------
-# 3️⃣ Train / Test Split
+#  Train / Test Split
 # -------------------------
 train_size = int(len(X) * 0.8)
 X_train_raw, X_test_raw = X.iloc[:train_size], X.iloc[train_size:]
 y_train_raw, y_test_raw = y[:train_size], y[train_size:]
 
 # -------------------------
-# 4️⃣ Scaling
+# Scaling
 # -------------------------
 scaler_X = MinMaxScaler()
 scaler_y = MinMaxScaler()
@@ -80,7 +80,7 @@ y_train_scaled = scaler_y.fit_transform(y_train_raw)
 y_test_scaled = scaler_y.transform(y_test_raw)
 
 # -------------------------
-# 5️⃣ Sequence Conversion
+#  Sequence Conversion
 # -------------------------
 time_steps = 12  # 1 year history
 
@@ -95,7 +95,7 @@ X_train, y_train = create_sequences(X_train_scaled, y_train_scaled)
 X_test, y_test = create_sequences(X_test_scaled, y_test_scaled)
 
 # -------------------------
-# 6️⃣ LSTM Model
+#  LSTM Model
 # -------------------------
 model = Sequential([
     LSTM(64, return_sequences=True, input_shape=(X_train.shape[1], X_train.shape[2])),
@@ -107,7 +107,7 @@ model = Sequential([
 model.compile(optimizer="adam", loss="mse")
 
 # -------------------------
-# 7️⃣ Train
+#  Train
 # -------------------------
 history = model.fit(X_train, y_train, epochs=100, batch_size=16, verbose=1)
 
@@ -119,14 +119,14 @@ plt.ylabel("Loss")
 plt.show()
 
 # -------------------------
-# 8️⃣ Predictions
+#  Predictions
 # -------------------------
 y_pred_scaled = model.predict(X_test)
 y_pred = scaler_y.inverse_transform(y_pred_scaled)
 y_true = scaler_y.inverse_transform(y_test)
 
 # -------------------------
-# 9️⃣ Evaluation Metrics
+# 9 Evaluation Metrics
 # -------------------------
 mae = mean_absolute_error(y_true, y_pred)
 rmse = np.sqrt(mean_squared_error(y_true, y_pred))
@@ -138,7 +138,7 @@ print(f"RMSE : {rmse:.2f}")
 print(f"R²   : {r2:.3f}")
 
 # -------------------------
-# 🔟 Plot Actual vs Predicted
+# Plot Actual vs Predicted
 # -------------------------
 test_index = data.index[train_size+time_steps:]
 plt.figure(figsize=(12,6))
